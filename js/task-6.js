@@ -1,39 +1,39 @@
-const createButton = document.querySelector('[data-create]');
-const destroyButton = document.querySelector('[data-destroy]');
-const boxesContainer = document.getElementById('boxes');
-const input = document.querySelector('input');
+document.addEventListener('DOMContentLoaded', () => {
+  const createBtn = document.getElementById('createBtn');
+  const destroyBtn = document.getElementById('destroyBtn');
+  const boxCountInput = document.getElementById('boxCount');
+  const boxesContainer = document.getElementById('boxes');
 
-function getRandomHexColor() {
-  return `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, 0)}`;
-}
-
-function createBoxes(amount) {
-  const boxes = [];
-  for (let i = 0; i < amount; i++) {
-    const box = document.createElement('div');
-    const size = 30 + i * 10; 
-    box.style.width = `${size}px`;
-    box.style.height = `${size}px`;
-    box.style.backgroundColor = getRandomHexColor();
-    boxes.push(box);
+  function getRandomHexColor() {
+    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, 0)}`;
   }
-  boxesContainer.append(...boxes);
-}
 
-function destroyBoxes() {
-  boxesContainer.innerHTML = ''; 
-}
-
-createButton.addEventListener('click', () => {
-  const amount = parseInt(input.value, 10);
-  if (amount < 1 || amount > 100 || isNaN(amount)) {
-    return; 
+  function createBoxes(amount) {
+    const boxes = [];
+    for (let i = 0; i < amount; i++) {
+      const box = document.createElement('div');
+      box.style.width = `${30 + i * 10}px`;
+      box.style.height = `${30 + i * 10}px`;
+      box.style.backgroundColor = getRandomHexColor();
+      boxes.push(box);
+    }
+    boxesContainer.append(...boxes);
   }
-  destroyBoxes();
-  createBoxes(amount); 
-  input.value = ''; 
+
+  function destroyBoxes() {
+    boxesContainer.innerHTML = '';
+  }
+
+  createBtn.addEventListener('click', () => {
+    const boxCount = parseInt(boxCountInput.value, 10);
+    if (boxCount >= 1 && boxCount <= 100) {
+      destroyBoxes(); 
+      createBoxes(boxCount); 
+    } else {
+      alert('Lütfen 1 ile 100 arasında bir sayı girin!');
+    }
+    boxCountInput.value = ''; 
+  });
+
+  destroyBtn.addEventListener('click', destroyBoxes); 
 });
-
-destroyButton.addEventListener('click', destroyBoxes);
